@@ -24,39 +24,48 @@
     <body>
         <p>ádsad</p>
         <a href="./homepage.php">sadasdasdasdasd </a>
-        <script>
+
+       
+        <form>
+            <input type="text" name="aa" id = "text">
+            <button class="btn" type="submit">aaa</button>
+        </form>
+        
+        <div class="img" id="img"></div>
+        <img class="img2"></img>
+        <div id="show"></div>
+        
+        
+    </body>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FqZXrwjZo0LcYtHcsB3iFJxx_9SPVKE&libraries=places"></script>
+
+    <script>
             $(document).ready(function(){
-                $(".btn").click(function(){
-                    $.get("https://maps.googleapis.com/maps/api/place/textsearch/json?query=CIC+tower&key=AIzaSyD4FqZXrwjZo0LcYtHcsB3iFJxx_9SPVKE", function(data,status){
+                $(".btn").click(function(e){
+                    e.preventDefault();
+                    var Akey="AIzaSyD4FqZXrwjZo0LcYtHcsB3iFJxx_9SPVKE";
+                    var query = $('#text').val();
+                    var urlmap=  "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + "&key=" + Akey;
+                    $.get(urlmap, function(data,status){
                     console.log("Data",data.results[0]);
 
-                    document.getElementById("show").innerHTML="Data: " + JSON.stringify(data);
+                    // document.getElementById("show").innerHTML="Data: " + JSON.stringify(data);
 
-                    $href=data.results[0].photos[0].photo_reference;
+                    var href=data.results[0].photos[0].photo_reference;
 
                     console.log(status);
 
-                    $base="https://maps.googleapis.com/maps/api/place/photo?maxheight=2268&photoreference=";
+                    var base="https://maps.googleapis.com/maps/api/place/photo?maxheight=2268&photoreference=";
 
-                    $Akey="AIzaSyD4FqZXrwjZo0LcYtHcsB3iFJxx_9SPVKE";
 
-                    $src=$base+$href +'&key='+ $Akey;
 
-                    $(".img2").append("<img src="+$src+"></img>");
+                    var src= base+ href +'&key='+ Akey;
 
-                    document.getElementById("img").innerHTML=$src;
+                    $(".img2").attr("src", src);
+
+                    document.getElementById("img").innerHTML=src;
                     });
                 });
             });
         </script> 
-       
-    
-        <button class="btn">aaa</button>
-        <div class="img" id="img"></div>
-        <div class="img2"></div>
-        <div id="show"></div>
-        
-        
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FqZXrwjZo0LcYtHcsB3iFJxx_9SPVKE&libraries=places"></script>
-    </body>
 </html>
