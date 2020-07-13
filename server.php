@@ -22,18 +22,19 @@
         </style>
     </head>
     <body>
-        <p>ádsad</p>
         <a href="./homepage.php">sadasdasdasdasd </a>
 
        
         <form>
-            <input type="text" name="aa" id = "text">
-            <button class="btn" type="submit">aaa</button>
+            <input type="text" id = "text">
+            <button class="btn" type="submit" style="border: 5px solid black">Search</button>
         </form>
         
         <div class="img" id="img"></div>
         <img class="img2"></img>
-        <div id="show"></div>
+        <ul id = "list">
+        </ul>
+            
         
         
     </body>
@@ -44,27 +45,40 @@
                 $(".btn").click(function(e){
                     e.preventDefault();
                     var Akey="AIzaSyD4FqZXrwjZo0LcYtHcsB3iFJxx_9SPVKE";
+                    
                     var query = $('#text').val();
                     var urlmap=  "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + "&key=" + Akey;
+                    // var temp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=21.0193347,105.7910315&radius=3000&&keyword="+query+"&key=" +Akey;
                     $.get(urlmap, function(data,status){
-                    console.log("Data",data.results[0]);
+                        console.log("Data",data);
+                        console.log(status);   
 
-                    // document.getElementById("show").innerHTML="Data: " + JSON.stringify(data);
-
-                    var href=data.results[0].photos[0].photo_reference;
-
-                    console.log(status);
-
-                    var base="https://maps.googleapis.com/maps/api/place/photo?maxheight=2268&photoreference=";
-
-
-
-                    var src= base+ href +'&key='+ Akey;
-
-                    $(".img2").attr("src", src);
-
-                    document.getElementById("img").innerHTML=src;
+                        if(data.status=="ZERO_RESULTS"){
+                            alert("Type again, u idiot!" + query + Akey);
+                        }
+                        
+                        else{
+                            // document.getElementById("show").innerHTML="Data: " + JSON.stringify(data);
+                            var href=data.results[0].photos[0].photo_reference;
+                            var base="https://maps.googleapis.com/maps/api/place/photo?maxheight=2268&photoreference=";
+                            var src= base+ href +'&key='+ Akey;
+                            // $(".img2").attr   ("src", src);
+                            // document.getElementById("img").innerHTML=src;
+                            //https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY
+                            
+                            var ID=data.results[0].place_id;
+                            var urlrv="https://maps.googleapis.com/maps/api/place/details/json?place_id=" +ID+"&key=" + Akey;
+                            $.get(urlrv, function(data1,status1){
+                                var temp = data1.result.reviews;
+                                $.each(temp, function(index, value){
+                                    $("#list").append("<li> Author: "+value.author_name+"<br>Rating: "+value.rating+"<br>Content: "+value.text+"</li><br>");
+                                    // document.getElementById("show").innerHTML= JSON.stringify(value) +"<br>";                             
+                                    console.log(data1,status1);            
+                                });
+                            });
+                        };
                     });
+
                 });
             });
         </script> 
