@@ -19,6 +19,12 @@
             html *{
                 font-size: 1.5em !important;
             }
+            body{
+                background-image: url("./img/GMB.png");
+                background-repeat: no-repeat;
+                background-size: 85% 85%;
+                background-position: center;
+            }
         </style>
     </head>
     <body>
@@ -34,7 +40,9 @@
         <img class="img2"></img>
         <ul id = "list">
         </ul>
+        <div id="show">
             
+        </div>  
         
         
     </body>
@@ -54,9 +62,11 @@
                         console.log(status);   
 
                         if(data.status=="ZERO_RESULTS"){
-                            alert("Type again, u idiot!" + query + Akey);
+                            alert("Type again, u idiot!" );
                         }
-                        
+                        else if(data.status=="INVALID_REQUEST"){
+                            alert("Put something in the search box, you dumb!")
+                        }
                         else{
                             // document.getElementById("show").innerHTML="Data: " + JSON.stringify(data);
                             var href=data.results[0].photos[0].photo_reference;
@@ -76,6 +86,7 @@
                                     console.log(data1,status1);            
                                 });
                             });
+                            // document.getElementById("show").innerHTML= '<?php include('ss.php')?>';
                         };
                     });
 
